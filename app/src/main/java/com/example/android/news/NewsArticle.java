@@ -5,53 +5,64 @@ package com.example.android.news;
  */
 public class NewsArticle {
 
-    String mTitle = "";
-    String mAuthor = "";
+    String mHeadline = "";
+    String mTrailText = "";
     String mShortUrl = "";
     String mImageResourceId = "";
+    private static final String NO_IMAGE_PROVIDED = null;
 
     /**
      * Constructor
-     * @param mTitle of news article
-     * @param mAuthor of news article
-     * @param mImageResourceId id of image as an integer
+     *
+     * @param headline        of news article
+     * @param trailText       of news article
+     * @param imageResourceId id of image as an integer
      */
-    public NewsArticle(String mTitle, String mAuthor, String mShortUrl, String mImageResourceId) {
-        this.mTitle = mTitle;
-        this.mAuthor = mAuthor;
-        this.mShortUrl = mShortUrl;
-        this.mImageResourceId = mImageResourceId;
+    public NewsArticle(String headline, String trailText, String shortUrl, String imageResourceId) {
+        this.mHeadline = headline;
+        this.mTrailText = trailText;
+        this.mShortUrl = shortUrl;
+        this.mImageResourceId = imageResourceId;
+
     }
 
     /**
      * get Title of news article
+     *
      * @return string
      */
-    public String getmHeadline() {
-        return mTitle;
+    public String getHeadline() {
+        return mHeadline;
     }
 
     /**
-     * get author of news article
+     * get TrailText of news article
+     *
      * @return string
      */
-    public String getmTrailText() {
-        return mAuthor;
+    public String getTrailText() {
+        return mTrailText;
     }
 
     /**
-     * get web url for news article
+     * get Web Url for news article
+     *
      * @return String
      */
-    public String getmShortUrl() { return mShortUrl; }
+    public String getShortUrl() {
+        return mShortUrl;
+    }
 
     /**
-     * get image of news article
+     * get Image of news article
+     *
      * @return String
      */
-    public String getmImageResourceId() {
+    public String getImageResourceId() {
         return mImageResourceId;
     }
+
+    public boolean hasImage() { return mImageResourceId != NO_IMAGE_PROVIDED; }
 
 }
 

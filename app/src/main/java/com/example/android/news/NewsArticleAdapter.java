@@ -41,18 +41,24 @@ public class NewsArticleAdapter extends ArrayAdapter<NewsArticle>{
 
         // Find the ImageView in the list_item.xml layout
         ImageView imageView = (ImageView) listItemView.findViewById(R.id.image);
-        // Set the image on the ImageView
-        new DownloadImageTask(imageView).execute(newsArticle.getmImageResourceId());
+
+        if (newsArticle.hasImage()) {
+            // Set the image on the ImageView
+            new DownloadImageTask(imageView).execute(newsArticle.getImageResourceId());
+        } else {
+            imageView.setImageResource(R.drawable.ph_img);
+        }
+
 
         // Find the TextView in the list_item.xml layout
         TextView headlineTextView = (TextView) listItemView.findViewById(R.id.headline);
         // Set the text on the TextView
-        headlineTextView.setText(newsArticle.getmHeadline());
+        headlineTextView.setText(newsArticle.getHeadline());
 
         // Find the TextView in the list_item.xml layout
         TextView trailTextTextView = (TextView) listItemView.findViewById(R.id.trail_text);
         // Set the text on the TextView
-        trailTextTextView.setText(newsArticle.getmTrailText());
+        trailTextTextView.setText(newsArticle.getTrailText());
 
 
         LinearLayout listItemContainerView = (LinearLayout) listItemView.findViewById(R.id
@@ -62,7 +68,7 @@ public class NewsArticleAdapter extends ArrayAdapter<NewsArticle>{
             public void onClick(View view) {
                 getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse
                         (newsArticle
-                        .getmShortUrl())));
+                        .getShortUrl())));
             }
         });
 
@@ -81,10 +87,10 @@ public class NewsArticleAdapter extends ArrayAdapter<NewsArticle>{
             this.bmImage = bmImage;
         }
         protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
+            String urlDisplay = urls[0];
             Bitmap mIcon = null;
             try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
+                InputStream in = new java.net.URL(urlDisplay).openStream();
                 mIcon = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());

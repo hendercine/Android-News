@@ -76,11 +76,11 @@ public class MainActivity extends AppCompatActivity {
     // Given a URL, establishes an HttpUrlConnection and retrieves
 // the web page content as a InputStream, which it returns as
 // a string.
-    private String downloadUrl(String myurl) throws IOException {
+    private String downloadUrl(String myUrl) throws IOException {
         InputStream is = null;
 
         try {
-            URL url = new URL(myurl);
+            URL url = new URL(myUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(10000 /* milliseconds */);
             conn.setConnectTimeout(15000 /* milliseconds */);
