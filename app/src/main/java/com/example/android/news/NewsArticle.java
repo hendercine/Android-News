@@ -1,9 +1,9 @@
 package com.example.android.news;
 
-/**
- * Created by Jason on 02/07/2016.
- */
-public class NewsArticle {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class NewsArticle implements Parcelable {
 
     String mHeadline = "";
     String mTrailText = "";
@@ -24,6 +24,13 @@ public class NewsArticle {
         this.mShortUrl = shortUrl;
         this.mImageResourceId = imageResourceId;
 
+    }
+
+    private NewsArticle(Parcel in) {
+        mHeadline = in.readString();
+        mTrailText = in.readString();
+        mShortUrl = in.readString();
+        mImageResourceId = in.readString();
     }
 
     /**
@@ -62,7 +69,28 @@ public class NewsArticle {
         return mImageResourceId;
     }
 
-    public boolean hasImage() { return mImageResourceId != NO_IMAGE_PROVIDED; }
+    public boolean hasImage() { return !mImageResourceId.equals(NO_IMAGE_PROVIDED); }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(mHeadline);
+        out.writeString(mTrailText);
+        out.writeString(mShortUrl);
+        out.writeString(mImageResourceId);
+    }
+    public static final Parcelable.Creator<NewsArticle> CREATOR = new Parcelable.Creator<NewsArticle>() {
+        public NewsArticle createFromParcel(Parcel in) {
+            return new NewsArticle(in);
+        }
+
+        public NewsArticle[] newArray(int size) {
+            return new NewsArticle[size];
+        }
+    };
 }
 

@@ -39,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-    //TODO: Find a method to refresh the content. Preferably a "pull down gesture".
+        //TODO: Find a method to refresh the content. Preferably a "pull down gesture".
 
-    // Before attempting to fetch the URL, makes sure that there is a network connection.
+        // Before attempting to fetch the URL, makes sure that there is a network connection.
         ConnectivityManager connMgr = (ConnectivityManager)
-        getSystemService(Context.CONNECTIVITY_SERVICE);
+                getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
@@ -131,5 +131,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("key", newsArticles);
+        super.onSaveInstanceState(outState);
     }
 }

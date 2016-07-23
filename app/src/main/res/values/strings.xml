@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Expat-Canadian News</string>
+    <string name="thumbnail_image_description">thumbnail_image</string>
 </resources>

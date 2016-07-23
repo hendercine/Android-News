@@ -18,9 +18,6 @@ import android.widget.TextView;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-/**
- * Created by Jason on 02/07/2016.
- */
 public class NewsArticleAdapter extends ArrayAdapter<NewsArticle>{
 
     public NewsArticleAdapter(Context context, ArrayList<NewsArticle> newsArticles) {
@@ -67,8 +64,7 @@ public class NewsArticleAdapter extends ArrayAdapter<NewsArticle>{
             @Override
             public void onClick(View view) {
                 getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse
-                        (newsArticle
-                        .getShortUrl())));
+                        (newsArticle.getShortUrl())));
             }
         });
 
