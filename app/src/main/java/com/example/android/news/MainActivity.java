@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
-            String GUARDIAN_API_URL = "http://content.guardianapis.com/us/technology?api-key=test&show-fields=headline,trailText,thumbnail,shortUrl";
+            String GUARDIAN_API_URL = "http://content.guardianapis.com/search?show-fields=headline%2CtrailText%2CshortUrl%2Cthumbnail&page-size=20&q=Canada%2CCanadian%2CCanadians%2CCanada%27s%2CToronto%2CMontreal%2CVancouver%2CCanuck&api-key=test";
             new DownloadWebpageTask().execute(GUARDIAN_API_URL);
         } else {
             Log.v("mClickHandler", "No network connection available.");
@@ -112,14 +112,17 @@ public class MainActivity extends AppCompatActivity {
                 JSONArray jsonArray = jsonResults.optJSONArray("results");
 
                 for (int i = 0; i < jsonArray.length(); i++) {
+                    String headline;
+                    String trailText;
+                    String shortUrl;
+                    String thumbnail;
+                    JSONObject resultsObject = jsonArray.getJSONObject(i);
+                    JSONObject fields = resultsObject.getJSONObject("fields");
 
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    JSONObject info = jsonObject.getJSONObject("fields");
-
-                    String headline = info.getString("headline");
-                    String trailText = info.getString("trailText");
-                    String thumbnail = info.getString("thumbnail");
-                    String shortUrl = info.getString("shortUrl");
+                    headline = fields.optString("headline");
+                    trailText = fields.optString("trailText");
+                    thumbnail = fields.optString("thumbnail");
+                    shortUrl = fields.optString("shortUrl");
 
                     newsArticles.add(new NewsArticle(headline, trailText, shortUrl, thumbnail));
                 }
@@ -128,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
         }
     }
 
