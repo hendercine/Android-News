@@ -20,8 +20,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,23 +43,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Create a new timer object
-        Timer myTimer = new Timer();
-        // Create a new TimerTask object and override the run method
-        TimerTask myTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                checkNetWorkConnectivity();
-            }
-        };
-
-        // The parameters are as follow: TimerTask, delay, period (currently 30 seconds)
-        myTimer.scheduleAtFixedRate(myTimerTask, 0, 30000);
-    }
+    //TODO: Find a method to refresh the content. Preferably a "pull down gesture".
 
     // When user clicks button, calls AsyncTask.
     // Before attempting to fetch the URL, makes sure that there is a network connection.
-    public void checkNetWorkConnectivity() {
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -88,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
             conn.setDoInput(true);
             // Starts the query
             conn.connect();
-            int response = conn.getResponseCode();
-            //Log.d(DEBUG_TAG, "The response is: " + response);
             is = conn.getInputStream();
 
             // Convert the InputStream into a string
@@ -127,8 +110,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             String data = "";
             //Custom Adapter
-            ArrayAdapter<NewsArticle> arrayAdapter = new NewsArticleAdapter(MainActivity.this,
-                    newsArticles);
+            ArrayAdapter<NewsArticle> arrayAdapter = new NewsArticleAdapter(MainActivity.this, newsArticles);
             ListView rootView = (ListView) findViewById(R.id.rootview_list_view);
             try {
                 JSONObject jsonRootObject = new JSONObject(result);
