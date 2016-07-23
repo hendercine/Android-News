@@ -23,16 +23,12 @@ import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
-    final private String GUARDIAN_API_URL = "http://content.guardianapis.com/us/technology?api-key=test&show-fields=headline,trailText,thumbnail,shortUrl";
     ArrayList<NewsArticle> newsArticles = new ArrayList<>();
 
     /**
      * Source Code Reference: http://web.archive.org/web/20140531042945/https://weblogs.java.net/blog/pat/archive/2004/10/stupid_scanner_1.html
-     *
-     * @param inputStream
-     * @param encoding
-     * @return
      */
+
     static String convertStreamToString(InputStream inputStream, String encoding) {
         Scanner scanner = new Scanner(inputStream, encoding).useDelimiter("\\A");
         return scanner.next();
@@ -45,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO: Find a method to refresh the content. Preferably a "pull down gesture".
 
-    // When user clicks button, calls AsyncTask.
     // Before attempting to fetch the URL, makes sure that there is a network connection.
         ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
+        getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
+            String GUARDIAN_API_URL = "http://content.guardianapis.com/us/technology?api-key=test&show-fields=headline,trailText,thumbnail,shortUrl";
             new DownloadWebpageTask().execute(GUARDIAN_API_URL);
         } else {
             Log.v("mClickHandler", "No network connection available.");
@@ -76,8 +72,7 @@ public class MainActivity extends AppCompatActivity {
             is = conn.getInputStream();
 
             // Convert the InputStream into a string
-            String contentAsString = convertStreamToString(is, "UTF-8");
-            return contentAsString;
+            return convertStreamToString(is, "UTF-8");
 
             // Makes sure that the InputStream is closed after the app is
             // finished using it.
@@ -108,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            String data = "";
             //Custom Adapter
             ArrayAdapter<NewsArticle> arrayAdapter = new NewsArticleAdapter(MainActivity.this, newsArticles);
             ListView rootView = (ListView) findViewById(R.id.rootview_list_view);
