@@ -9,20 +9,15 @@ public class NewsArticle implements Parcelable {
     String mTrailText = "";
     String mShortUrl = "";
     String mImageResourceId = "";
+    String mLastModified = "";
     private static final String NO_IMAGE_PROVIDED = null;
 
-    /**
-     * Constructor
-     *
-     * @param headline        of news article
-     * @param trailText       of news article
-     * @param imageResourceId id of image as an integer
-     */
-    public NewsArticle(String headline, String trailText, String shortUrl, String imageResourceId) {
+    public NewsArticle(String headline, String trailText, String shortUrl, String imageResourceId, String lastModified) {
         this.mHeadline = headline;
         this.mTrailText = trailText;
         this.mShortUrl = shortUrl;
         this.mImageResourceId = imageResourceId;
+        this.mLastModified = lastModified;
 
     }
 
@@ -31,6 +26,7 @@ public class NewsArticle implements Parcelable {
         mTrailText = in.readString();
         mShortUrl = in.readString();
         mImageResourceId = in.readString();
+        mLastModified = in.readString();
     }
 
     /**
@@ -71,6 +67,10 @@ public class NewsArticle implements Parcelable {
 
     public boolean hasImage() { return !mImageResourceId.equals(NO_IMAGE_PROVIDED); }
 
+    public String getLastModified() {
+        return mLastModified;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -82,6 +82,7 @@ public class NewsArticle implements Parcelable {
         out.writeString(mTrailText);
         out.writeString(mShortUrl);
         out.writeString(mImageResourceId);
+        out.writeString(mLastModified);
     }
     public static final Parcelable.Creator<NewsArticle> CREATOR = new Parcelable.Creator<NewsArticle>() {
         public NewsArticle createFromParcel(Parcel in) {

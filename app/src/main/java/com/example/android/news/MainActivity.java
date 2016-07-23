@@ -5,8 +5,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -38,6 +41,41 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final SwipeRefreshLayout swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe);
+
+        swipeView.setEnabled(false);
+        ListView lView = (ListView) findViewById(R.id.rootview_list_view);
+        ArrayAdapter<String> adp = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, createItems(40,0 ));
+        lView.setAdapter(adp);
+
+        swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeView.setRefreshing(true);
+                ( new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeView.setRefreshing(false);
+
+                    }
+                }, 3000);
+            }
+        });
+
+        lView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem == 0)
+                    swipeView.setEnabled(true);
+                else
+                    swipeView.setEnabled(false);
+            }
+        });
 
         //TODO: Find a method to refresh the content. Preferably a "pull down gesture".
 
@@ -47,11 +85,15 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
-            String GUARDIAN_API_URL = "http://content.guardianapis.com/search?show-fields=headline%2CtrailText%2CshortUrl%2Cthumbnail&page-size=20&q=Canada%2CCanadian%2CCanadians%2CCanada%27s%2CToronto%2CMontreal%2CVancouver%2CCanuck&api-key=test";
+            String GUARDIAN_API_URL = "http://content.guardianapis.com/search?show-fields=headline%2CtrailText%2CshortUrl%2Cthumbnail%2ClastModified&page-size=20&q=Canada%2CCanadian%2CCanadians%2CCanada%27s%2CToronto%2CMontreal%2CVancouver%2CCanuck&api-key=test";
             new DownloadWebpageTask().execute(GUARDIAN_API_URL);
         } else {
             Log.v("mClickHandler", "No network connection available.");
         }
+    }
+
+    private int createItems(int i, int i1) {
+        return 0;
     }
 
     // Given a URL, establishes an HttpUrlConnection and retrieves
@@ -116,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     String trailText;
                     String shortUrl;
                     String thumbnail;
+                    String lastModified;
                     JSONObject resultsObject = jsonArray.getJSONObject(i);
                     JSONObject fields = resultsObject.getJSONObject("fields");
 
@@ -123,8 +166,9 @@ public class MainActivity extends AppCompatActivity {
                     trailText = fields.optString("trailText");
                     thumbnail = fields.optString("thumbnail");
                     shortUrl = fields.optString("shortUrl");
+                    lastModified = fields.optString("lastModified");
 
-                    newsArticles.add(new NewsArticle(headline, trailText, shortUrl, thumbnail));
+                    newsArticles.add(new NewsArticle(headline, trailText, shortUrl, thumbnail, lastModified));
                 }
                 rootView.setAdapter(arrayAdapter);
 

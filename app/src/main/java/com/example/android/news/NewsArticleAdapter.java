@@ -46,17 +46,14 @@ public class NewsArticleAdapter extends ArrayAdapter<NewsArticle>{
             imageView.setImageResource(R.drawable.ph_img);
         }
 
-
-        // Find the TextView in the list_item.xml layout
         TextView headlineTextView = (TextView) listItemView.findViewById(R.id.headline);
-        // Set the text on the TextView
         headlineTextView.setText(newsArticle.getHeadline());
 
-        // Find the TextView in the list_item.xml layout
-        TextView trailTextTextView = (TextView) listItemView.findViewById(R.id.trail_text);
-        // Set the text on the TextView
-        trailTextTextView.setText(newsArticle.getTrailText());
+        TextView lastModifiedTextView = (TextView) listItemView.findViewById(R.id.last_modified);
+        lastModifiedTextView.setText(newsArticle.getLastModified());
 
+        TextView trailTextTextView = (TextView) listItemView.findViewById(R.id.trail_text);
+        trailTextTextView.setText(newsArticle.getTrailText());
 
         LinearLayout listItemContainerView = (LinearLayout) listItemView.findViewById(R.id
                 .list_item_container_view);
@@ -67,8 +64,6 @@ public class NewsArticleAdapter extends ArrayAdapter<NewsArticle>{
                         (newsArticle.getShortUrl())));
             }
         });
-
-
 
         return listItemView;
     }
